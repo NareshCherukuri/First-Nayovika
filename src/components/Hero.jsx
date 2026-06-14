@@ -1,43 +1,48 @@
 import React from 'react';
+import heroSaree from '../assets/Banner-Photo.png';
 
 const Hero = () => {
   return (
-    <section id="home" className="relative pt-36 pb-20 lg:pt-48 lg:pb-32 overflow-hidden flex items-center justify-center min-h-[90vh]">
-      <div className="container mx-auto px-4 md:px-8 relative z-10 text-center">
+    <section id="home" className="relative pt-32 pb-12 w-full flex items-center justify-center">
+      <div className="container mx-auto px-4 md:px-8">
         
-        {/* Glassmorphism Hero Panel */}
-        <div className="w-full max-w-7xl mx-auto bg-white/20 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.05)] rounded-[3rem] p-8 md:p-16 lg:p-24 relative overflow-hidden animate-fade-in-up">
+        {/* Contained Glassmorphism Image Banner */}
+        <div className="w-full max-w-7xl mx-auto h-[300px] md:h-[500px] rounded-[2.5rem] overflow-hidden border border-white/50 shadow-2xl relative group bg-transparent backdrop-blur-sm">
           
-          {/* Subtle internal glows */}
-          <div className="absolute -top-20 -left-20 w-64 h-64 bg-brand-gold/20 rounded-full blur-[60px] pointer-events-none"></div>
-          <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-brand-maroon/10 rounded-full blur-[60px] pointer-events-none"></div>
-
-          <div className="relative z-10">
-            <span className="inline-flex items-center gap-2 py-2 px-5 rounded-full bg-white/40 border border-white/60 text-brand-maroon text-sm font-bold mb-8 tracking-widest uppercase shadow-sm">
-              <span className="w-2 h-2 rounded-full bg-brand-maroon animate-pulse"></span>
-              New Arrival Collection
-            </span>
-            
-            <h2 className="text-5xl md:text-7xl font-extrabold mb-8 tracking-tight drop-shadow-sm leading-tight text-gray-900">
-              Elegant Sarees for <br className="hidden md:block"/> 
-              <span className="bg-gradient-to-r from-brand-maroon to-brand-gold bg-clip-text text-transparent">Every Occasion</span>
-            </h2>
-            
-            <p className="text-lg md:text-2xl text-gray-800 max-w-2xl mx-auto mb-10 font-medium leading-relaxed">
-              Discover our handpicked collection of premium silk, organza, and cotton sarees. Crafted with love, designed for you.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-              <a href="#collection" className="px-8 py-4 bg-gradient-to-r from-brand-maroon to-[#600018] text-white rounded-full font-bold text-lg shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-                Explore Collection
-              </a>
-              <a href="#contact" className="px-8 py-4 bg-white/40 border border-white/60 text-brand-maroon rounded-full font-bold text-lg shadow-sm hover:shadow-md hover:bg-white/60 hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
-                Contact Us
-              </a>
+          {/* Background Saree Image inside the banner */}
+          <div className="absolute inset-0 w-full h-full flex items-center justify-center">
+            <img 
+              src={heroSaree} 
+              alt="New Arrival Saree Background" 
+              className="w-full h-full object-cover object-[center_30%] transform group-hover:scale-[101%] transition-transform duration-1000"
+            />
+            {/* Very soft bottom-up gradient to ensure text readability without hiding the saree */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+          </div>
+          
+          {/* Content Over the Banner (aligned bottom-left to keep the saree visual clear) */}
+          <div className="absolute inset-0 flex items-end justify-start z-10 p-8 md:p-12 lg:p-16">
+            <div className="max-w-xl animate-fade-in-up text-left">
+              
+              <h2 className="text-3xl md:text-4.5xl lg:text-5xl font-extrabold mb-4 tracking-tight drop-shadow-md text-white">
+                Elegant Sarees for <br className="hidden sm:block" />
+                <span className="bg-gradient-to-r from-[#E25C74] via-[#E5A93B] to-[#F6D27E] bg-clip-text text-transparent">Every Occasion</span>
+              </h2>
+              
+              <div>
+                <a 
+                  href="#collection" 
+                  className="inline-flex items-center justify-center py-2 px-5 rounded-full bg-white/20 border border-white/30 text-white text-xs md:text-sm font-bold tracking-widest uppercase shadow-sm hover:bg-white/40 hover:-translate-y-0.5 transition-all duration-300"
+                >
+                  Shop New Arrivals
+                </a>
+              </div>
+              
             </div>
           </div>
+          
         </div>
-
+        
       </div>
     </section>
   );
