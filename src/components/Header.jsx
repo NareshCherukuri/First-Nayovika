@@ -1,10 +1,26 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import logoIcon from '../assets/NayovikaIcon.png';
 import logoText from '../assets/NayovikaText.png';
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeId, setActiveId] = useState(null);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const handleLinkClick = useCallback((e, href) => {
     e.preventDefault();
@@ -25,10 +41,6 @@ const Header = () => {
     ? { backgroundColor: 'rgba(255,255,255,0.55)', color: '#800020' }
     : {};
 
-  const bs = (id) => ({
-    backgroundColor: activeId === id ? '#D4AF37' : '#800020',
-  });
-
   const as_ = (id) => activeId === id
     ? { color: '#800020', transform: 'translateX(4px)' }
     : {};
@@ -47,7 +59,7 @@ const Header = () => {
   return (
     <>
       {/* ── Floating Header ── */}
-      <div className="fixed top-6 left-0 w-full z-50 flex justify-center px-4 md:px-8 transition-all duration-300">
+      <div className={`fixed top-6 left-0 w-full z-50 flex justify-center px-4 md:px-8 transition-transform duration-500 ease-in-out ${isVisible ? 'translate-y-0 opacity-100' : '-translate-y-[150%] opacity-0 pointer-events-none'}`}>
         <header className="w-full max-w-7xl bg-white/20 backdrop-blur-xl border border-white/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.07)] rounded-full px-6 md:px-10 py-4 flex items-center justify-between transition-all duration-300 relative">
           <a href="#home" className="absolute left-1/2 -translate-x-1/2 md:relative md:left-0 md:translate-x-0 flex items-center gap-2 md:gap-3">
             <img src={logoIcon} alt="Nayovika Icon" className="h-8 md:h-10 w-auto object-contain" />

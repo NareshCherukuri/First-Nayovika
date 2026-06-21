@@ -1,9 +1,9 @@
-import React from 'react';
-import heroSaree from '../assets/Banner-Photo.png';
+
+import heroSaree from '../assets/ABC.png';
 
 const Hero = () => {
   return (
-    <section id="home" className="relative pt-32 pb-12 w-full flex items-center justify-center">
+    <section id="home" className="relative pt-4 pb-6 w-full flex items-center justify-center">
       <div className="container mx-auto px-4 md:px-8">
         
         {/* Contained Glassmorphism Image Banner */}
