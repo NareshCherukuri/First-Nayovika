@@ -8,6 +8,9 @@ import material1 from '../assets/dress_materials/material1.png';
 import material2 from '../assets/dress_materials/material2.png';
 import lehenga1 from '../assets/lehengas/lehenga1.png';
 import lehenga2 from '../assets/lehengas/lehenga2.png';
+import midnight_bloom_1 from '../assets/sarees/midnight_bloom_1.png';
+import midnight_bloom_2 from '../assets/sarees/midnight_bloom_2.png';
+import midnight_bloom_3 from '../assets/sarees/midnight_bloom_3.png';
 
 export const products = [
   // ── SAREES: SEMI BANARASI ──
@@ -19,9 +22,10 @@ export const products = [
     fabric: "semi Banarasi Silk",
     detailLabel: "Length",
     detailValue: "6.5 m (with blouse)",
-    color: "Deep Maroon & Gold",
+    color: "Midnight Blue & Gold",
     description: "A stunning semi Banarasi silk saree with intricate zari work, perfect for weddings and grand festive occasions.",
-    image: saree1,
+    image: midnight_bloom_1,
+    gallery: [midnight_bloom_1, midnight_bloom_2, midnight_bloom_3],
   },
   {
     id: 13,

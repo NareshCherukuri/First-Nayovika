@@ -21,7 +21,7 @@ const moreCollections = [
   { id: 'dress_materials', name: 'Materials', image: materialsImg },
 ];
 
-const CategorySection = ({ onNavigate }) => {
+const CategorySection = ({ onNavigate, onProductClick }) => {
   const [activeSection, setActiveSection] = useState(null);
 
   useEffect(() => {
@@ -222,7 +222,7 @@ const CategorySection = ({ onNavigate }) => {
                 </div>
                 <div className="flex gap-3 md:gap-4 overflow-x-auto pb-3 scrollbar-none snap-x snap-mandatory -mx-4 px-4">
                   {allSarees.map((product) => (
-                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer">
+                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </div>
@@ -258,7 +258,7 @@ const CategorySection = ({ onNavigate }) => {
                 </div>
                 <div className="flex gap-3 md:gap-4 overflow-x-auto pb-3 scrollbar-none snap-x snap-mandatory -mx-4 px-4">
                   {allLehengas.map((product) => (
-                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer">
+                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </div>
@@ -294,7 +294,7 @@ const CategorySection = ({ onNavigate }) => {
                 </div>
                 <div className="flex gap-3 md:gap-4 overflow-x-auto pb-3 scrollbar-none snap-x snap-mandatory -mx-4 px-4">
                   {allDresses.map((product) => (
-                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer">
+                    <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
                         <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       </div>

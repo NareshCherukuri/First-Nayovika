@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import logoIcon from '../assets/NayovikaIcon.png';
 import logoText from '../assets/NayovikaText.png';
 
-const Header = ({ onNavigateHome }) => {
+const Header = ({ onNavigateHome, hideShippingMarquee = false }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -126,7 +126,8 @@ const Header = ({ onNavigateHome }) => {
           </div>
         </header>
 
-        {/* Bottom Marquee Bar */}
+      {/* Bottom Marquee Bar */}
+      {!hideShippingMarquee && (
         <div className="w-full bg-brand-maroon/5 backdrop-blur-md border-b border-white/40 py-2.5 overflow-hidden flex whitespace-nowrap">
           <div className="animate-marquee inline-flex gap-20 md:gap-32 px-4 items-center text-xs md:text-sm font-semibold text-brand-maroon tracking-wider">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -137,7 +138,8 @@ const Header = ({ onNavigateHome }) => {
             ))}
           </div>
         </div>
-      </div>
+      )}
+    </div>
 
       {/* ── Mobile Menu Overlay ── */}
       {isMobileMenuOpen && (

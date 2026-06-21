@@ -4,6 +4,7 @@ import Hero from './components/Hero';
 import CategorySection from './components/CategorySection';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
+import ProductDetails from './components/ProductDetails';
 import { products } from './data/products';
 import sareeBanner from './assets/categories/sarees.png';
 import lehengasImg from './assets/categories/lehengas.png';
@@ -27,9 +28,10 @@ function App() {
   const materials = products.filter(p => p.category === 'dress_materials');
   const lehengas = products.filter(p => p.category === 'lehengas');
 
-  // SPA View State: 'home' | 'category_grid'
+  // SPA View State: 'home' | 'category_grid' | 'product_details'
   const [currentView, setCurrentView] = useState('home');
   const [activeCategory, setActiveCategory] = useState('sarees');
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Filter State for "All Sarees" View
   const [sareeFilter, setSareeFilter] = useState('all');
@@ -130,6 +132,13 @@ function App() {
     }
   };
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+    setActiveCategory(product.category);
+    setCurrentView('product_details');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen font-sans relative selection:bg-brand-maroon selection:text-white pb-10 text-brand-dark">
       {/* Always-on app background */}
@@ -139,12 +148,15 @@ function App() {
         <div className="absolute top-[30%] left-[40%] w-[35rem] h-[35rem] bg-pink-300/30 rounded-full blur-[120px] mix-blend-multiply" />
       </div>
 
-      <Header onNavigateHome={() => {
-        setCurrentView('home');
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }} />
+      <Header 
+        hideShippingMarquee={currentView === 'product_details'}
+        onNavigateHome={() => {
+          setCurrentView('home');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }} 
+      />
 
-      <main className="pt-20 md:pt-24 min-h-screen">
+      <main className={`min-h-screen ${currentView === 'product_details' ? 'pt-[60px]' : 'pt-[104px]'}`}>
 
         {/* =========================================
             VIEW: HOME PAGE 
@@ -152,7 +164,7 @@ function App() {
         {currentView === 'home' && (
           <div className="animate-fade-in">
             <Hero />
-            <CategorySection onNavigate={handleNavigation} />
+            <CategorySection onNavigate={handleNavigation} onProductClick={handleProductClick} />
           </div>
         )}
 
@@ -216,7 +228,7 @@ function App() {
               {gridProducts.length > 0 ? (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 py-8">
                   {gridProducts.map(product => (
-                    <div key={product.id} className="flex flex-col group cursor-pointer">
+                    <div key={product.id} className="flex flex-col group cursor-pointer" onClick={() => handleProductClick(product)}>
                       <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden mb-3 bg-gray-50">
                         <img
                           src={product.image}
@@ -294,12 +306,26 @@ function App() {
           </div>
         )}
 
-
+        {/* =========================================
+            VIEW: PRODUCT DETAILS PAGE (PDP)
+        ========================================= */}
+        {currentView === 'product_details' && selectedProduct && (
+          <div className="animate-fade-in w-full bg-white">
+            <ProductDetails
+              product={selectedProduct}
+              onBack={() => {
+                setCurrentView('category_grid');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              onProductClick={handleProductClick}
+            />
+          </div>
+        )}
 
       </main>
 
       <Footer />
-      <MobileBottomNav />
+      {currentView !== 'product_details' && <MobileBottomNav />}
     </div>
   );
 }
