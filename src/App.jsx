@@ -1,19 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import CategorySection from './components/CategorySection';
-import ProductCard from './components/ProductCard';
 import Footer from './components/Footer';
 import MobileBottomNav from './components/MobileBottomNav';
 import { products } from './data/products';
+import sareeBanner from './assets/categories/sarees.png';
+import lehengasImg from './assets/categories/lehengas.png';
+import dressesImg from './assets/categories/dresses.png';
+import materialsImg from './assets/categories/dress_materials.png';
 
-const sareeSubSections = [
-  { id: 'semi_banarasi', name: 'Semi Banarasi Silk', matchText: 'semi banarasi' },
-  { id: 'mul_cotton', name: 'Mul Cotton Collection', matchText: 'mul cotton' },
-  { id: 'organza', name: 'Organza Collection', matchText: 'organza' },
-  { id: 'semi_tussar', name: 'Semi Tussar Silk', matchText: 'semi tussar' },
-  { id: 'chinon_silk', name: 'Chinon Silk Collection', matchText: 'chinon silk' },
-  { id: 'dola_silk', name: 'Dola Silk Collection', matchText: 'dola silk' },
+
+const sareeFabrics = ['All', 'Banarasi', 'Mul Cotton', 'Organza', 'Tussar', 'Chinon Silk', 'Dola Silk'];
+
+const collectionSubSections = [
+  { id: 'semi_banarasi', name: 'Banarasi', matchText: 'semi banarasi', category: 'sarees' },
+  { id: 'mul_cotton', name: 'Mul Cotton', matchText: 'mul cotton', category: 'sarees' },
+  { id: 'organza', name: 'Organza', matchText: 'organza', category: 'sarees' },
+  { id: 'semi_tussar', name: 'Tussar', matchText: 'semi tussar', category: 'sarees' },
+  { id: 'dress_materials', name: 'Dress Materials', matchText: '', category: 'dress_materials' },
 ];
 
 function App() {
@@ -22,194 +27,275 @@ function App() {
   const materials = products.filter(p => p.category === 'dress_materials');
   const lehengas = products.filter(p => p.category === 'lehengas');
 
+  // SPA View State: 'home' | 'category_grid'
+  const [currentView, setCurrentView] = useState('home');
+  const [activeCategory, setActiveCategory] = useState('sarees');
+
+  // Filter State for "All Sarees" View
+  const [sareeFilter, setSareeFilter] = useState('all');
+  const [inStockOnly, setInStockOnly] = useState(false);
+  const [outOfStockOnly, setOutOfStockOnly] = useState(false);
+  const [sortBy, setSortBy] = useState('featured');
+  const [isFilterDrawerOpen, setIsFilterDrawerOpen] = useState(false);
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false);
+
+  let gridProducts = [];
+  let bannerImg = sareeBanner;
+  let bannerTitle = 'Sarees';
+  let bannerDesc = 'A gentle shimmer woven into everyday comfort';
+
+  if (activeCategory === 'sarees') {
+    gridProducts = allSarees.filter(p => {
+      const matchesFabric = sareeFilter === 'all' || p.fabric.toLowerCase().includes(sareeFilter.toLowerCase());
+      const matchesStock = (!inStockOnly && !outOfStockOnly) || (inStockOnly && p.inStock) || (outOfStockOnly && !p.inStock);
+      return matchesFabric && matchesStock;
+    });
+  } else if (activeCategory === 'lehengas') {
+    gridProducts = lehengas;
+    bannerImg = lehengasImg;
+    bannerTitle = 'Lehengas';
+    bannerDesc = 'Premium bridal spotlight';
+  } else if (activeCategory === 'dresses') {
+    gridProducts = dresses;
+    bannerImg = dressesImg;
+    bannerTitle = 'Dresses';
+    bannerDesc = 'Designer ready-to-wear';
+  } else if (activeCategory === 'dress_materials') {
+    gridProducts = materials;
+    bannerImg = materialsImg;
+    bannerTitle = 'Dress Materials';
+    bannerDesc = 'Custom Tailoring Fabrics';
+  }
+
+  if (activeCategory !== 'sarees') {
+    // Apply stock filter to non-sarees as well
+    gridProducts = gridProducts.filter(p => {
+      return (!inStockOnly && !outOfStockOnly) || (inStockOnly && p.inStock) || (outOfStockOnly && !p.inStock);
+    });
+  }
+
+  if (sortBy === 'price-low') gridProducts.sort((a, b) => a.price - b.price);
+  if (sortBy === 'price-high') gridProducts.sort((a, b) => b.price - a.price);
+
+  // State for Row-by-Row Sub-sections
+  const [expandedSections, setExpandedSections] = useState({});
+  const toggleSection = (id) => {
+    setExpandedSections(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
   const getSubSarees = (matchText) => {
     return allSarees.filter(p => p.fabric.toLowerCase().includes(matchText.toLowerCase()));
   };
 
-  const [expandedSections, setExpandedSections] = React.useState({});
+  // Handle browser hash changes (for back button or header links)
+  useEffect(() => {
+    const handleHash = () => {
+      if (window.location.hash === '#home' || window.location.hash === '') {
+        setCurrentView('home');
+        window.scrollTo(0, 0);
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
-  const toggleSection = (id) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [id]: !prev[id]
-    }));
+  // Centralized Navigation Handler from CategorySection
+  const handleNavigation = (id) => {
+    if (['sarees', 'lehengas', 'dresses', 'dress_materials'].includes(id)) {
+      setCurrentView('category_grid');
+      setActiveCategory(id);
+      if (id === 'sarees') setSareeFilter('all');
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 10);
+    } else if (collectionSubSections.find(s => s.id === id)) {
+      const subSection = collectionSubSections.find(s => s.id === id);
+      setCurrentView('category_grid');
+      setActiveCategory(subSection.category);
+      if (subSection.category === 'sarees') {
+        const fab = subSection.matchText === 'semi banarasi' ? 'banarasi' : subSection.matchText === 'semi tussar' ? 'tussar' : subSection.matchText;
+        setSareeFilter(fab);
+      }
+      setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 10);
+    } else {
+      // Normal scroll on home page
+      if (currentView !== 'home') setCurrentView('home');
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          const offset = 100;
+          const bodyRect = document.body.getBoundingClientRect().top;
+          const elementRect = el.getBoundingClientRect().top;
+          window.scrollTo({ top: elementRect - bodyRect - offset, behavior: 'smooth' });
+        }
+      }, 50);
+    }
   };
 
   return (
-    <div className="min-h-screen font-sans relative text-brand-dark selection:bg-brand-maroon selection:text-white pb-10">
-      {/* Vibrant Background for True Glassmorphism */}
+    <div className="min-h-screen font-sans relative selection:bg-brand-maroon selection:text-white pb-10 text-brand-dark">
+      {/* Always-on app background */}
       <div className="fixed top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none bg-gradient-to-br from-rose-50 via-orange-50 to-amber-50">
         <div className="absolute top-[-10%] left-[-10%] w-[50rem] h-[50rem] bg-brand-maroon/20 rounded-full blur-[120px] mix-blend-multiply animate-pulse" style={{ animationDuration: '8s' }} />
         <div className="absolute bottom-[-10%] right-[-10%] w-[45rem] h-[45rem] bg-brand-gold/30 rounded-full blur-[120px] mix-blend-multiply animate-pulse" style={{ animationDuration: '10s' }} />
         <div className="absolute top-[30%] left-[40%] w-[35rem] h-[35rem] bg-pink-300/30 rounded-full blur-[120px] mix-blend-multiply" />
       </div>
 
-      <Header />
+      <Header onNavigateHome={() => {
+        setCurrentView('home');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }} />
 
-      <main className="pt-24">
-        <Hero />
+      <main className="pt-20 md:pt-24 min-h-screen">
 
-        {/* Categories Bar right after Banner/Hero */}
-        <CategorySection />
+        {/* =========================================
+            VIEW: HOME PAGE 
+        ========================================= */}
+        {currentView === 'home' && (
+          <div className="animate-fade-in">
+            <Hero />
+            <CategorySection onNavigate={handleNavigation} />
+          </div>
+        )}
 
-        <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-16 md:space-y-24 mt-8 relative z-10">
-          
-          {/* ──── SAREES SECTION (ROW-BY-ROW SUB-SECTIONS) ──── */}
-          <section 
-            id="sarees" 
-            className="scroll-mt-36 p-6 md:p-12 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/40 shadow-[0_16px_48px_0_rgba(128,0,32,0.04)] relative overflow-hidden"
-          >
-            {/* Ambient Background Glow specific to this section */}
-            <div className="absolute top-0 right-0 w-72 h-72 bg-brand-gold/10 rounded-full blur-3xl -z-10 pointer-events-none" />
-            
-            {/* Main Section Header */}
-            <div className="text-center mb-12 md:mb-16 border-b border-brand-maroon/10 pb-8">
-              <span className="text-brand-maroon text-xs font-bold uppercase tracking-widest bg-brand-maroon/5 border border-brand-maroon/10 px-3.5 py-1.5 rounded-full">
-                Bespoke Weaves
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-950 mt-3 mb-4 tracking-tight">
-                Our Saree Collections
-              </h2>
-              <div className="w-16 h-1 bg-brand-gold mx-auto rounded-full"></div>
+        {/* =========================================
+            VIEW: UNIFIED CATEGORY GRID (PIXEL PERFECT SNAPSHOT MATCH)
+        ========================================= */}
+        {currentView === 'category_grid' && (
+          <div className="w-full bg-white animate-fade-in pb-20">
+            {/* Edge-to-edge Banner using category image */}
+            <div className="relative w-full h-[280px] md:h-[380px] bg-gray-900 -mx-0 overflow-hidden">
+              <img
+                src={bannerImg}
+                alt={bannerTitle}
+                className="w-full h-full object-cover opacity-80 object-[center_30%]"
+              />
+              <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 bg-black/20">
+                <h2 className="text-white text-3xl md:text-4xl lg:text-5xl tracking-[0.15em] font-serif uppercase mb-2 md:mb-4 drop-shadow-md">
+                  {bannerTitle}
+                </h2>
+                <p className="text-white/90 text-xs md:text-sm tracking-widest uppercase max-w-md drop-shadow-md">
+                  {bannerDesc}
+                </p>
+              </div>
             </div>
 
-            {/* Vertical Stack of Saree Fabric Sub-sections */}
-            <div className="space-y-16">
-              {sareeSubSections.map((subSection) => {
-                const subSarees = getSubSarees(subSection.matchText);
-                if (subSarees.length === 0) return null;
+            <div className="max-w-6xl mx-auto">
+              {/* Ultra Minimalist Filter Bar */}
+              <div className="flex items-center gap-6 py-4 px-4 border-b border-gray-100">
+                <button
+                  onClick={() => setIsFilterDrawerOpen(true)}
+                  className="flex items-center gap-1.5 text-[13px] text-gray-700 tracking-wider hover:text-black transition-colors"
+                >
+                  Filter
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
 
-                return (
-                  <div key={subSection.id} className="group/row">
-                    
-                    {/* Sub-section Header */}
-                    <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-lg md:text-2xl font-bold text-gray-900 flex items-center gap-2.5">
-                        <span className="w-2 h-5 md:w-2.5 md:h-6 bg-brand-gold rounded-full inline-block group-hover/row:bg-brand-maroon transition-colors duration-300"></span>
-                        {subSection.name}
-                      </h3>
-                      
-                      {/* Show All Glass Button */}
-                      <button 
-                        onClick={() => toggleSection(subSection.id)}
-                        className="px-4 py-2 rounded-full text-xs font-semibold text-brand-maroon bg-white/40 border border-brand-maroon/15 hover:border-brand-gold hover:bg-brand-gold hover:text-white hover:scale-105 transition-all shadow-xs hover:shadow-sm"
-                      >
-                        {expandedSections[subSection.id] ? "Show Less" : "Show All"}
-                      </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+                    className="flex items-center gap-1.5 text-[13px] text-gray-700 tracking-wider hover:text-black transition-colors"
+                  >
+                    {sortBy === 'featured' ? 'Featured' : sortBy === 'price-low' ? 'Price: Low to High' : 'Price: High to Low'}
+                    <svg className={`w-3 h-3 transition-transform ${isSortDropdownOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+
+                  {isSortDropdownOpen && (
+                    <div className="absolute top-full left-0 mt-2 w-48 bg-white border border-gray-100 shadow-xl z-20 py-2">
+                      <button onClick={() => { setSortBy('featured'); setIsSortDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs tracking-wider text-gray-600 hover:bg-gray-50">Featured</button>
+                      <button onClick={() => { setSortBy('price-low'); setIsSortDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs tracking-wider text-gray-600 hover:bg-gray-50">Price: Low to High</button>
+                      <button onClick={() => { setSortBy('price-high'); setIsSortDropdownOpen(false); }} className="w-full text-left px-4 py-2 text-xs tracking-wider text-gray-600 hover:bg-gray-50">Price: High to Low</button>
                     </div>
+                  )}
+                </div>
+              </div>
 
-                    {/* Saree Row List: Mobile Carousel & Desktop Grid */}
-                    <div className={expandedSections[subSection.id] 
-                      ? "grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6" 
-                      : "flex overflow-x-auto md:grid md:overflow-x-visible md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 pb-4 md:pb-0 scrollbar-none snap-x snap-mandatory scroll-smooth"}>
-                      {subSarees.map((product) => (
-                        <div 
-                          key={product.id} 
-                          className={expandedSections[subSection.id] 
-                            ? "w-full" 
-                            : "snap-center w-40 sm:w-56 md:w-auto flex-shrink-0 md:flex-shrink"}
-                        >
-                          <ProductCard product={product} />
+              {/* Minimalist 2-Column Product Grid */}
+              {gridProducts.length > 0 ? (
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 px-4 py-8">
+                  {gridProducts.map(product => (
+                    <div key={product.id} className="flex flex-col group cursor-pointer">
+                      <div className="relative w-full aspect-[3/4] rounded-lg overflow-hidden mb-3 bg-gray-50">
+                        <img
+                          src={product.image}
+                          alt={product.name}
+                          className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${product.inStock === false ? 'opacity-50 grayscale-[0.5]' : ''}`}
+                        />
+                      </div>
+                      <h3 className="text-center text-[11px] sm:text-xs text-gray-800 leading-relaxed px-1 sm:px-2 group-hover:text-black line-clamp-2">
+                        {product.name}
+                      </h3>
+                      <p className="text-center text-[13px] sm:text-sm font-semibold text-black mt-1.5">
+                        ₹ {product.price.toLocaleString('en-IN')}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="py-20 text-center">
+                  <p className="text-sm text-gray-500 tracking-wider">No products found.</p>
+                  <button onClick={() => { if (activeCategory === 'sarees') setSareeFilter('all'); setInStockOnly(false); setOutOfStockOnly(false); }} className="mt-4 text-xs underline text-gray-800">Clear Filters</button>
+                </div>
+              )}
+            </div>
+
+            {/* Hidden Drawer */}
+            {isFilterDrawerOpen && (
+              <div className="fixed inset-0 z-[100] flex justify-start">
+                <div className="bg-black/20 absolute inset-0 transition-opacity" onClick={() => setIsFilterDrawerOpen(false)} />
+                <div className="bg-white w-[85%] max-w-sm h-full relative z-10 flex flex-col shadow-2xl animate-[slideIn_0.3s_ease-out]">
+                  <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                    <h3 className="text-lg font-serif tracking-widest text-black uppercase">Filter</h3>
+                    <button onClick={() => setIsFilterDrawerOpen(false)} className="p-2 text-gray-400 hover:text-black">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                  </div>
+
+                  <div className="flex-1 overflow-y-auto p-6 space-y-8">
+                    {activeCategory === 'sarees' && (
+                      <>
+                        <div>
+                          <h4 className="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">Fabric</h4>
+                          <div className="space-y-4">
+                            {sareeFabrics.map(fab => (
+                              <label key={fab} className="flex items-center gap-3 cursor-pointer">
+                                <input type="radio" checked={sareeFilter === (fab === 'All' ? 'all' : fab.toLowerCase())} onChange={() => setSareeFilter(fab === 'All' ? 'all' : fab.toLowerCase())} className="w-3.5 h-3.5 text-black accent-black" />
+                                <span className="text-[13px] text-gray-700 tracking-wide">{fab}</span>
+                              </label>
+                            ))}
+                          </div>
                         </div>
-                      ))}
+                        <div className="h-[1px] w-full bg-gray-100"></div>
+                      </>
+                    )}
+                    <div>
+                      <h4 className="text-xs tracking-[0.2em] uppercase text-gray-400 mb-4">Availability</h4>
+                      <div className="space-y-4">
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input type="checkbox" checked={inStockOnly} onChange={(e) => setInStockOnly(e.target.checked)} className="w-3.5 h-3.5 rounded text-black accent-black" />
+                          <span className="text-[13px] text-gray-700 tracking-wide">In Stock</span>
+                        </label>
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input type="checkbox" checked={outOfStockOnly} onChange={(e) => setOutOfStockOnly(e.target.checked)} className="w-3.5 h-3.5 rounded text-black accent-black" />
+                          <span className="text-[13px] text-gray-700 tracking-wide">Out of Stock</span>
+                        </label>
+                      </div>
                     </div>
                   </div>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* ──── DRESSES SECTION ──── */}
-          <section 
-            id="dresses" 
-            className="scroll-mt-36 p-8 md:p-12 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/40 shadow-[0_16px_48px_0_rgba(128,0,32,0.04)] relative overflow-hidden"
-          >
-            {/* Ambient Background Glow specific to this section */}
-            <div className="absolute bottom-0 left-0 w-72 h-72 bg-rose-200/20 rounded-full blur-3xl -z-10 pointer-events-none" />
-
-            <div className="text-center mb-10 md:mb-14">
-              <span className="text-brand-maroon text-xs font-bold uppercase tracking-widest bg-brand-maroon/5 border border-brand-maroon/10 px-3.5 py-1.5 rounded-full">
-                Boutique Styles
-              </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-3 mb-4 tracking-tight">
-                Designer Dresses
-              </h2>
-              <div className="w-16 h-1 bg-brand-gold mx-auto rounded-full mb-4"></div>
-              <p className="text-base text-gray-600 max-w-xl mx-auto font-medium">
-                Stunning ready-to-wear Anarkali suits and ethnic gowns for the modern woman.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {dresses.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </section>
-
-          {/* ──── DRESS MATERIALS SECTION ──── */}
-          <section 
-            id="dress_materials" 
-            className="scroll-mt-36 p-8 md:p-12 rounded-[2.5rem] bg-white/10 backdrop-blur-xl border border-white/40 shadow-[0_16px_48px_0_rgba(128,0,32,0.04)] relative overflow-hidden"
-          >
-            {/* Ambient Background Glow specific to this section */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-amber-100/30 rounded-full blur-3xl -z-10 pointer-events-none" />
-
-            <div className="text-center mb-10 md:mb-14">
-              <span className="text-brand-maroon text-xs font-bold uppercase tracking-widest bg-brand-maroon/5 border border-brand-maroon/10 px-3.5 py-1.5 rounded-full">
-                Custom Tailoring Fabrics
-              </span>
-              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mt-3 mb-4 tracking-tight">
-                Premium Dress Materials
-              </h2>
-              <div className="w-16 h-1 bg-brand-gold mx-auto rounded-full mb-4"></div>
-              <p className="text-base text-gray-600 max-w-xl mx-auto font-medium">
-                High-quality unstitched fabrics in pure handblock cotton and delicate Chanderi silk.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-              {materials.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </section>
-
-          {/* ──── LEHENGAS SECTION (SPOTLIGHT DESIGN) ──── */}
-          <section 
-            id="lehengas" 
-            className="scroll-mt-36 p-8 md:p-12 rounded-[2.5rem] bg-white/15 backdrop-blur-xl border border-brand-gold/30 shadow-[0_20px_50px_0_rgba(212,175,55,0.08)] relative overflow-hidden"
-          >
-            {/* Prominent Gold Glow specific to this Spotlight section */}
-            <div className="absolute -bottom-10 right-[-10%] w-[35rem] h-[35rem] bg-brand-gold/15 rounded-full blur-[100px] -z-10 pointer-events-none" />
-            <div className="absolute -top-10 left-[-10%] w-[30rem] h-[30rem] bg-brand-maroon/10 rounded-full blur-[90px] -z-10 pointer-events-none" />
-
-            <div className="text-center mb-10 md:mb-14">
-              <span className="text-brand-gold text-xs font-bold uppercase tracking-widest bg-brand-gold/10 border border-brand-gold/25 px-4 py-1.5 rounded-full">
-                👑 Premium Bridal Spotlight
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-950 mt-4 mb-4 tracking-tight">
-                Grand Lehengas
-              </h2>
-              <div className="w-24 h-1 bg-brand-gold mx-auto rounded-full mb-4"></div>
-              <p className="text-base md:text-lg text-gray-700 max-w-xl mx-auto font-medium">
-                Luxury wedding and bridal lehenga cholis customized to perfection with intricate Zardozi embroidery.
-              </p>
-            </div>
-
-            {/* Spotlight Grid: Larger cards layout for premium display */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
-              {lehengas.map((product) => (
-                <div key={product.id} className="relative group">
-                  {/* Decorative gold ring highlight around the card on hover */}
-                  <div className="absolute -inset-1.5 bg-gradient-to-r from-brand-gold to-brand-maroon rounded-[2.2rem] opacity-0 group-hover:opacity-100 blur transition duration-500 -z-10" />
-                  <ProductCard product={product} />
+                  <div className="p-5 border-t border-gray-100 flex gap-4">
+                    <button onClick={() => { if (activeCategory === 'sarees') setSareeFilter('all'); setInStockOnly(false); setOutOfStockOnly(false); }} className="flex-1 py-3 text-xs tracking-widest uppercase text-gray-500 border border-gray-200 hover:bg-gray-50 transition-colors">Clear</button>
+                    <button onClick={() => setIsFilterDrawerOpen(false)} className="flex-1 py-3 text-xs tracking-widest uppercase text-white bg-black hover:bg-gray-900 transition-colors">Apply</button>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+            )}
+          </div>
+        )}
 
-        </div>
+
+
       </main>
 
       <Footer />
