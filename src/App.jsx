@@ -148,12 +148,12 @@ function App() {
         <div className="absolute top-[30%] left-[40%] w-[35rem] h-[35rem] bg-pink-300/30 rounded-full blur-[120px] mix-blend-multiply" />
       </div>
 
-      <Header 
+      <Header
         hideShippingMarquee={currentView === 'product_details'}
         onNavigateHome={() => {
           setCurrentView('home');
           window.scrollTo({ top: 0, behavior: 'smooth' });
-        }} 
+        }}
       />
 
       <main className={`min-h-screen ${currentView === 'product_details' ? 'pt-[60px]' : 'pt-[104px]'}`}>
