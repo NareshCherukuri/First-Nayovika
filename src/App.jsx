@@ -12,9 +12,10 @@ import dressesImg from './assets/categories/dresses.png';
 import materialsImg from './assets/categories/dress_materials.png';
 
 
-const sareeFabrics = ['All', 'Banarasi', 'Mul Cotton', 'Organza', 'Tussar', 'Chinon Silk', 'Dola Silk'];
+const sareeFabrics = ['All', 'Semi Silk', 'Banarasi', 'Mul Cotton', 'Organza', 'Tussar', 'Chinon Silk', 'Dola Silk'];
 
 const collectionSubSections = [
+  { id: 'semi_silk', name: 'Semi Silk', matchText: 'semi silk', category: 'sarees' },
   { id: 'semi_banarasi', name: 'Banarasi', matchText: 'semi banarasi', category: 'sarees' },
   { id: 'mul_cotton', name: 'Mul Cotton', matchText: 'mul cotton', category: 'sarees' },
   { id: 'organza', name: 'Organza', matchText: 'organza', category: 'sarees' },
@@ -113,7 +114,7 @@ function App() {
       setCurrentView('category_grid');
       setActiveCategory(subSection.category);
       if (subSection.category === 'sarees') {
-        const fab = subSection.matchText === 'semi banarasi' ? 'banarasi' : subSection.matchText === 'semi tussar' ? 'tussar' : subSection.matchText;
+        const fab = subSection.matchText === 'semi banarasi' ? 'banarasi' : subSection.matchText === 'semi tussar' ? 'tussar' : subSection.matchText === 'semi silk' ? 'semi silk' : subSection.matchText;
         setSareeFilter(fab);
       }
       setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 10);
@@ -310,7 +311,7 @@ function App() {
             VIEW: PRODUCT DETAILS PAGE (PDP)
         ========================================= */}
         {currentView === 'product_details' && selectedProduct && (
-          <div className="animate-fade-in w-full bg-white">
+          <div className="animate-fade-in w-full">
             <ProductDetails
               product={selectedProduct}
               onBack={() => {

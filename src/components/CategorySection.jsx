@@ -14,6 +14,7 @@ const topFeatured = { id: 'lehengas', name: 'Lehengas', image: lehengasImg, desc
 const bottomFeatured = { id: 'dresses', name: 'Dresses', image: dressesImg, desc: 'Designer ready-to-wear', badge: 'NEW ARRIVAL' };
 
 const moreCollections = [
+  { id: 'semi_silk', name: 'Semi Silk', image: saree1 },
   { id: 'semi_banarasi', name: 'Banarasi', image: saree1 },
   { id: 'mul_cotton', name: 'Mul Cotton', image: saree2 },
   { id: 'organza', name: 'Organza', image: saree3 },

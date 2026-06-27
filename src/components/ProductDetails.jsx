@@ -38,10 +38,10 @@ const ProductDetails = ({ product, onBack, onProductClick }) => {
     .slice(0, 6);
 
   return (
-    <div className="relative min-h-screen bg-gray-50 pb-24">
+    <div className="relative min-h-screen pb-24">
 
       {/* Image Gallery (Native Scroll Snap) */}
-      <div className="relative w-full h-[60vh] md:h-[70vh] bg-gray-200">
+      <div className="relative w-full h-[60vh] md:h-[70vh]">
 
         <div
           ref={scrollContainerRef}
