@@ -65,7 +65,7 @@ const Header = ({ onNavigateHome, hideShippingMarquee = false }) => {
         <header className="w-full transition-all duration-300">
           <div className="max-w-7xl mx-auto w-full px-4 md:px-8 py-3 grid grid-cols-3 items-center">
 
-            {/* Left: Mobile Menu Toggle / Desktop Logo */}
+            {/* Left: Mobile Menu Toggle / Desktop Navigation */}
             <div className="flex items-center justify-start">
               {/* Mobile Menu Toggle */}
               <button className="md:hidden hover:text-brand-gold transition-colors focus:outline-none text-brand-maroon" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
@@ -73,21 +73,6 @@ const Header = ({ onNavigateHome, hideShippingMarquee = false }) => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
               </button>
-
-              {/* Desktop Logo */}
-              <a href="#home" onClick={handleLogoClick} className="hidden md:flex items-center gap-2 group">
-                <img src={logoIcon} alt="Nayovika Icon" className="h-10 w-auto object-contain group-hover:scale-105 transition-transform" />
-                <img src={logoText} alt="Nayovika" className="h-6 w-auto object-contain" />
-              </a>
-            </div>
-
-            {/* Center: Mobile Logo / Desktop Navigation */}
-            <div className="flex items-center justify-center">
-              {/* Mobile Logo */}
-              <a href="#home" onClick={handleLogoClick} className="flex md:hidden items-center gap-2 group">
-                <img src={logoIcon} alt="Nayovika Icon" className="h-8 w-auto object-contain group-hover:scale-105 transition-transform" />
-                <img src={logoText} alt="Nayovika" className="h-5 w-auto object-contain" />
-              </a>
 
               {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center space-x-8 lg:space-x-12 text-gray-800 font-semibold text-sm lg:text-base tracking-wide whitespace-nowrap">
@@ -109,6 +94,14 @@ const Header = ({ onNavigateHome, hideShippingMarquee = false }) => {
                   </a>
                 ))}
               </nav>
+            </div>
+
+            {/* Center: Logo (Mobile & Desktop) */}
+            <div className="flex items-center justify-center">
+              <a href="#home" onClick={handleLogoClick} className="flex items-center gap-2 group">
+                <img src={logoIcon} alt="Nayovika Icon" className="h-8 md:h-10 w-auto object-contain group-hover:scale-105 transition-transform" />
+                <img src={logoText} alt="Nayovika" className="h-5 md:h-6 w-auto object-contain" style={{ filter: 'brightness(0.7)' }} />
+              </a>
             </div>
 
             {/* Right: Icons */}
@@ -154,7 +147,7 @@ const Header = ({ onNavigateHome, hideShippingMarquee = false }) => {
         <div className="flex items-center justify-between pb-3.5 border-b border-brand-maroon/10 mb-3.5">
           <div className="flex items-center gap-2">
             <img src={logoIcon} alt="Nayovika Icon" className="h-8 w-auto object-contain" />
-            <img src={logoText} alt="Nayovika" className="h-5 w-auto object-contain" />
+            <img src={logoText} alt="Nayovika" className="h-5 w-auto object-contain" style={{ filter: 'brightness(0.7)' }} />
           </div>
           <button onClick={() => setIsMobileMenuOpen(false)} className="text-brand-maroon/70 hover:text-brand-maroon bg-white/30 hover:bg-white/50 p-2 rounded-full border border-white/40 focus:outline-none hover:rotate-90 transition-all duration-300">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>

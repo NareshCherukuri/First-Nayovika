@@ -11,8 +11,75 @@ import lehenga2 from '../assets/lehengas/lehenga2.png';
 import midnight_bloom_1 from '../assets/sarees/midnight_bloom_1.png';
 import midnight_bloom_2 from '../assets/sarees/midnight_bloom_2.png';
 import midnight_bloom_3 from '../assets/sarees/midnight_bloom_3.png';
+import semi_silk_1 from '../assets/semi_silk/1.jpg';
+import semi_silk_2 from '../assets/semi_silk/2.jpg';
+import semi_silk_3 from '../assets/semi_silk/3.jpg';
+import semi_silk_4 from '../assets/semi_silk/4.jpg';
+import semi_silk_5 from '../assets/semi_silk/5.jpg';
 
 export const products = [
+  // ── SAREES: SEMI SILK ──
+  {
+    id: 19,
+    category: 'sarees',
+    name: "Terracotta Copper Soft Silk Zari Saree",
+    price: 3599,
+    fabric: "semi silk",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Terracotta Copper",
+    description: "Premium soft silk zari sarees.",
+    image: semi_silk_1,
+  },
+  {
+    id: 20,
+    category: 'sarees',
+    name: "Rust Brown Soft Silk Zari Saree",
+    price: 3799,
+    fabric: "semi silk",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Rust Brown",
+    description: "Premium soft silk zari sarees.",
+    image: semi_silk_2,
+  },
+  {
+    id: 21,
+    category: 'sarees',
+    name: "Dusty Rose Soft Silk Zari Saree",
+    price: 3699,
+    fabric: "semi silk",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Dusty Rose",
+    description: "Premium soft silk zari sarees.",
+    image: semi_silk_3,
+  },
+  {
+    id: 22,
+    category: 'sarees',
+    name: "Copper Gold Soft Silk Zari Saree",
+    price: 3899,
+    fabric: "semi silk",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Copper Gold",
+    description: "Premium soft silk zari sarees.",
+    image: semi_silk_4,
+  },
+  {
+    id: 23,
+    category: 'sarees',
+    name: "Deep Maroon Soft Silk Zari Saree",
+    price: 3499,
+    fabric: "semi silk",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Deep Maroon",
+    description: "Premium soft silk zari sarees.",
+    image: semi_silk_5,
+  },
+
   // ── SAREES: SEMI BANARASI ──
   {
     id: 1,
