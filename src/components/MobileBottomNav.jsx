@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 
-const MobileBottomNav = () => {
+const MobileBottomNav = ({ onNavigate, setIsSearchOpen, collectionSubSections = [] }) => {
   const [activeTab, setActiveTab] = useState('home');
   const [isVisible, setIsVisible] = useState(false);
+  const [isCategoryDrawerOpen, setIsCategoryDrawerOpen] = useState(false);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -71,7 +72,15 @@ const MobileBottomNav = () => {
     return (
       <button
         key={item.id}
-        onClick={() => setActiveTab(item.id)}
+        onClick={() => {
+          setActiveTab(item.id);
+          if (item.id === 'search') {
+            setIsSearchOpen?.(prev => !prev);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else if (item.id === 'categories') {
+            setIsCategoryDrawerOpen(true);
+          }
+        }}
         className="flex flex-col items-center justify-center focus:outline-none flex-1 w-full h-full"
       >
         <div className={`transition-colors duration-200 ${isActive ? 'text-brand-maroon' : 'text-gray-500'}`}>
@@ -130,9 +139,52 @@ const MobileBottomNav = () => {
           <div className="w-[40%] h-[56px] flex">
             {navItemsRight.map(renderNavItem)}
           </div>
-          
         </div>
       </div>
+      
+      {/* ── Mobile Categories Drawer ── */}
+      {isCategoryDrawerOpen && (
+        <div className="fixed inset-0 z-[110] flex flex-col justify-end pointer-events-auto">
+          <div className="bg-black/20 absolute inset-0 transition-opacity" onClick={() => setIsCategoryDrawerOpen(false)} />
+          <div className="bg-white w-full rounded-t-3xl relative z-10 flex flex-col shadow-2xl animate-[slideUp_0.3s_ease-out] max-h-[70vh]">
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <h3 className="text-lg font-serif tracking-widest text-black uppercase">Categories</h3>
+              <button onClick={() => setIsCategoryDrawerOpen(false)} className="p-2 text-gray-400 hover:text-black bg-gray-50 rounded-full">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            
+            <div className="overflow-y-auto p-4 flex-1">
+               <div className="grid grid-cols-2 gap-3 pb-[env(safe-area-inset-bottom)]">
+                 {/* Main categories */}
+                 {['sarees', 'lehengas', 'dresses'].map(mainCat => (
+                   <button 
+                     key={mainCat}
+                     onClick={() => { onNavigate?.(mainCat); setIsCategoryDrawerOpen(false); setActiveTab('home'); }}
+                     className="w-full text-left p-4 bg-gray-50 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-center items-start"
+                   >
+                     <span className="text-xs uppercase tracking-widest text-brand-maroon font-bold mb-1">{mainCat}</span>
+                     <span className="text-sm font-medium text-gray-800">Shop All</span>
+                   </button>
+                 ))}
+                 
+                 {/* Sub collections */}
+                 {collectionSubSections.map(sub => (
+                   <button 
+                     key={sub.id}
+                     onClick={() => { onNavigate?.(sub.id); setIsCategoryDrawerOpen(false); setActiveTab('home'); }}
+                     className="w-full text-left p-4 bg-rose-50/30 rounded-xl border border-rose-100 shadow-sm flex flex-col justify-center items-start"
+                   >
+                     <span className="text-[10px] uppercase tracking-widest text-rose-500 font-bold mb-1">{sub.category}</span>
+                     <span className="text-sm font-bold text-gray-900">{sub.name}</span>
+                   </button>
+                 ))}
+               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      
     </div>
   );
 };
