@@ -97,7 +97,7 @@ const CategorySection = ({ onNavigate, onProductClick }) => {
             className={`col-span-1 lg:col-span-5 h-[320px] sm:h-[400px] lg:h-[500px] relative rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer group shadow-[0_8px_32px_0_rgba(128,0,32,0.1)] transition-all duration-500
               ${activeSection === mainFeatured.id ? 'ring-2 sm:ring-4 ring-brand-gold/50' : 'hover:shadow-2xl hover:-translate-y-1'}`}
           >
-            <img src={mainFeatured.image} alt={mainFeatured.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={mainFeatured.image} alt={mainFeatured.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
             {/* Badge */}
@@ -121,7 +121,7 @@ const CategorySection = ({ onNavigate, onProductClick }) => {
               className={`flex-1 relative rounded-xl sm:rounded-2xl overflow-hidden cursor-pointer group shadow-[0_8px_32px_0_rgba(128,0,32,0.1)] transition-all duration-500
                 ${activeSection === topFeatured.id ? 'ring-2 sm:ring-4 ring-brand-gold/50' : 'hover:shadow-2xl hover:-translate-y-1'}`}
             >
-              <img src={topFeatured.image} alt={topFeatured.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <img src={topFeatured.image} alt={topFeatured.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
               <div className="absolute top-2 left-2 md:top-4 md:left-4 bg-[#7D8851] text-white text-[8px] md:text-xs font-bold px-1.5 py-0.5 md:px-3 md:py-1 rounded-full uppercase tracking-wider shadow-md">
@@ -225,7 +225,7 @@ const CategorySection = ({ onNavigate, onProductClick }) => {
                   {allSarees.map((product) => (
                     <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105" />
                       </div>
                       <p className="text-[11px] text-gray-700 text-center leading-tight line-clamp-2 px-1 group-hover:text-brand-maroon transition-colors">{product.name}</p>
                       <p className="text-[12px] font-semibold text-gray-900 text-center mt-1">₹ {product.price.toLocaleString('en-IN')}</p>
@@ -261,7 +261,7 @@ const CategorySection = ({ onNavigate, onProductClick }) => {
                   {allLehengas.map((product) => (
                     <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105" />
                       </div>
                       <p className="text-[11px] text-gray-700 text-center leading-tight line-clamp-2 px-1 group-hover:text-brand-gold transition-colors">{product.name}</p>
                       <p className="text-[12px] font-semibold text-gray-900 text-center mt-1">₹ {product.price.toLocaleString('en-IN')}</p>
@@ -297,7 +297,7 @@ const CategorySection = ({ onNavigate, onProductClick }) => {
                   {allDresses.map((product) => (
                     <div key={product.id} className="flex-shrink-0 w-[130px] sm:w-[155px] md:w-[175px] snap-start group cursor-pointer" onClick={() => onProductClick && onProductClick(product)}>
                       <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 bg-gray-50 shadow-sm">
-                        <img src={product.image} alt={product.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        <img src={product.image} alt={product.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105" />
                       </div>
                       <p className="text-[11px] text-gray-700 text-center leading-tight line-clamp-2 px-1 group-hover:text-brand-maroon transition-colors">{product.name}</p>
                       <p className="text-[12px] font-semibold text-gray-900 text-center mt-1">₹ {product.price.toLocaleString('en-IN')}</p>

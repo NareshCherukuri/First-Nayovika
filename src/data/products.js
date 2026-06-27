@@ -17,13 +17,20 @@ import semi_silk_3 from '../assets/semi_silk/3.jpg';
 import semi_silk_4 from '../assets/semi_silk/4.jpg';
 import semi_silk_5 from '../assets/semi_silk/5.jpg';
 
+import banarasi_cherry_red from '../assets/banarasi/cherry red.jpg';
+import banarasi_emerald_green from '../assets/banarasi/emerald green.jpg';
+import banarasi_olive_green from '../assets/banarasi/olive green.jpg';
+import banarasi_peacock_green from '../assets/banarasi/peacock green.jpg';
+import banarasi_rani_pink from '../assets/banarasi/rani pink.jpg';
+import banarasi_royal_wine from '../assets/banarasi/royal wine.jpg';
+
 export const products = [
   // ── SAREES: SEMI SILK ──
   {
     id: 19,
     category: 'sarees',
     name: "Terracotta Copper Soft Silk Zari Saree",
-    price: 3599,
+    price: 1799,
     fabric: "semi silk",
     detailLabel: "Length",
     detailValue: "6.2 m (with blouse)",
@@ -35,7 +42,7 @@ export const products = [
     id: 20,
     category: 'sarees',
     name: "Rust Brown Soft Silk Zari Saree",
-    price: 3799,
+    price: 1799,
     fabric: "semi silk",
     detailLabel: "Length",
     detailValue: "6.2 m (with blouse)",
@@ -47,7 +54,7 @@ export const products = [
     id: 21,
     category: 'sarees',
     name: "Dusty Rose Soft Silk Zari Saree",
-    price: 3699,
+    price: 1799,
     fabric: "semi silk",
     detailLabel: "Length",
     detailValue: "6.2 m (with blouse)",
@@ -59,7 +66,7 @@ export const products = [
     id: 22,
     category: 'sarees',
     name: "Copper Gold Soft Silk Zari Saree",
-    price: 3899,
+    price: 1799,
     fabric: "semi silk",
     detailLabel: "Length",
     detailValue: "6.2 m (with blouse)",
@@ -71,7 +78,7 @@ export const products = [
     id: 23,
     category: 'sarees',
     name: "Deep Maroon Soft Silk Zari Saree",
-    price: 3499,
+    price: 1799,
     fabric: "semi silk",
     detailLabel: "Length",
     detailValue: "6.2 m (with blouse)",
@@ -80,12 +87,86 @@ export const products = [
     image: semi_silk_5,
   },
 
+  // ── SAREES: BANARASI ──
+  {
+    id: 24,
+    category: 'sarees',
+    name: "Cherry Red Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Cherry Red",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_cherry_red,
+  },
+  {
+    id: 25,
+    category: 'sarees',
+    name: "Emerald Green Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Emerald Green",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_emerald_green,
+  },
+  {
+    id: 26,
+    category: 'sarees',
+    name: "Olive Green Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Olive Green",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_olive_green,
+  },
+  {
+    id: 27,
+    category: 'sarees',
+    name: "Peacock Green Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Peacock Green",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_peacock_green,
+  },
+  {
+    id: 28,
+    category: 'sarees',
+    name: "Rani Pink Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Rani Pink",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_rani_pink,
+  },
+  {
+    id: 29,
+    category: 'sarees',
+    name: "Royal Wine Banarasi Saree",
+    price: 2600,
+    fabric: "banarasi",
+    detailLabel: "Length",
+    detailValue: "6.2 m (with blouse)",
+    color: "Royal Wine",
+    description: "Authentic banarasi woven silk saree with rich traditional motifs.",
+    image: banarasi_royal_wine,
+  },
+
   // ── SAREES: SEMI BANARASI ──
   {
     id: 1,
     category: 'sarees',
     name: "Midnight Bloom Silk Saree",
-    price: 3499,
+    price: 2600,
     fabric: "semi Banarasi Silk",
     detailLabel: "Length",
     detailValue: "6.5 m (with blouse)",
@@ -98,7 +179,7 @@ export const products = [
     id: 13,
     category: 'sarees',
     name: "Royal Crimson Banarasi Saree",
-    price: 3799,
+    price: 2600,
     fabric: "semi Banarasi Silk",
     detailLabel: "Length",
     detailValue: "6.5 m (with blouse)",

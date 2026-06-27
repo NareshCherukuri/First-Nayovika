@@ -33,6 +33,10 @@ function App() {
   const [currentView, setCurrentView] = useState('home');
   const [activeCategory, setActiveCategory] = useState('sarees');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  
+  // Search State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Filter State for "All Sarees" View
   const [sareeFilter, setSareeFilter] = useState('all');
@@ -47,7 +51,13 @@ function App() {
   let bannerTitle = 'Sarees';
   let bannerDesc = 'A gentle shimmer woven into everyday comfort';
 
-  if (activeCategory === 'sarees') {
+  if (searchQuery.trim() !== '') {
+    const q = searchQuery.toLowerCase();
+    gridProducts = products.filter(p => p.name.toLowerCase().includes(q) || p.fabric.toLowerCase().includes(q));
+    bannerImg = sareeBanner; // fallback
+    bannerTitle = `Search Results`;
+    bannerDesc = `Found ${gridProducts.length} items for "${searchQuery}"`;
+  } else if (activeCategory === 'sarees') {
     gridProducts = allSarees.filter(p => {
       const matchesFabric = sareeFilter === 'all' || p.fabric.toLowerCase().includes(sareeFilter.toLowerCase());
       const matchesStock = (!inStockOnly && !outOfStockOnly) || (inStockOnly && p.inStock) || (outOfStockOnly && !p.inStock);
@@ -107,12 +117,16 @@ function App() {
     if (['sarees', 'lehengas', 'dresses', 'dress_materials'].includes(id)) {
       setCurrentView('category_grid');
       setActiveCategory(id);
+      setSearchQuery('');
+      setIsSearchOpen(false);
       if (id === 'sarees') setSareeFilter('all');
       setTimeout(() => window.scrollTo({ top: 0, behavior: 'smooth' }), 10);
     } else if (collectionSubSections.find(s => s.id === id)) {
       const subSection = collectionSubSections.find(s => s.id === id);
       setCurrentView('category_grid');
       setActiveCategory(subSection.category);
+      setSearchQuery('');
+      setIsSearchOpen(false);
       if (subSection.category === 'sarees') {
         const fab = subSection.matchText === 'semi banarasi' ? 'banarasi' : subSection.matchText === 'semi tussar' ? 'tussar' : subSection.matchText === 'semi silk' ? 'semi silk' : subSection.matchText;
         setSareeFilter(fab);
@@ -137,6 +151,7 @@ function App() {
     setSelectedProduct(product);
     setActiveCategory(product.category);
     setCurrentView('product_details');
+    setIsSearchOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -153,8 +168,20 @@ function App() {
         hideShippingMarquee={currentView === 'product_details'}
         onNavigateHome={() => {
           setCurrentView('home');
+          setSearchQuery('');
           window.scrollTo({ top: 0, behavior: 'smooth' });
         }}
+        isSearchOpen={isSearchOpen}
+        setIsSearchOpen={setIsSearchOpen}
+        searchQuery={searchQuery}
+        setSearchQuery={(q) => {
+          setSearchQuery(q);
+          if(q.trim() !== '') {
+            setCurrentView('category_grid');
+          }
+        }}
+        onNavigate={handleNavigation}
+        collectionSubSections={collectionSubSections}
       />
 
       <main className={`min-h-screen ${currentView === 'product_details' ? 'pt-[60px]' : 'pt-[104px]'}`}>
@@ -234,7 +261,7 @@ function App() {
                         <img
                           src={product.image}
                           alt={product.name}
-                          className={`w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 ${product.inStock === false ? 'opacity-50 grayscale-[0.5]' : ''}`}
+                          className={`w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-105 ${product.inStock === false ? 'opacity-50 grayscale-[0.5]' : ''}`}
                         />
                       </div>
                       <h3 className="text-center text-[11px] sm:text-xs text-gray-800 leading-relaxed px-1 sm:px-2 group-hover:text-black line-clamp-2">
@@ -326,7 +353,13 @@ function App() {
       </main>
 
       <Footer />
-      {currentView !== 'product_details' && <MobileBottomNav />}
+      {currentView !== 'product_details' && (
+        <MobileBottomNav 
+          onNavigate={handleNavigation} 
+          setIsSearchOpen={setIsSearchOpen} 
+          collectionSubSections={collectionSubSections}
+        />
+      )}
     </div>
   );
 }

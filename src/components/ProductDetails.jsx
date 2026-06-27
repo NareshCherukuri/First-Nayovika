@@ -53,7 +53,7 @@ const ProductDetails = ({ product, onBack, onProductClick }) => {
               <img
                 src={img}
                 alt={`${product.name} view ${idx + 1}`}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain p-4"
               />
             </div>
           ))}
@@ -186,7 +186,7 @@ const ProductDetails = ({ product, onBack, onProductClick }) => {
                 className="flex-shrink-0 w-[140px] sm:w-[160px] snap-start group cursor-pointer bg-white/40 backdrop-blur-xl border border-white/60 p-2 rounded-2xl hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="w-full aspect-[3/4] rounded-xl overflow-hidden mb-2 shadow-sm">
-                  <img src={relProduct.image} alt={relProduct.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img src={relProduct.image} alt={relProduct.name} className="w-full h-full object-contain p-2 transition-transform duration-700 group-hover:scale-110" />
                 </div>
                 <p className="text-[11px] text-gray-700 text-center leading-tight line-clamp-2 px-1 font-medium group-hover:text-brand-maroon transition-colors">{relProduct.name}</p>
                 <p className="text-[12px] font-bold text-gray-900 text-center mt-1">₹ {relProduct.price.toLocaleString('en-IN')}</p>
